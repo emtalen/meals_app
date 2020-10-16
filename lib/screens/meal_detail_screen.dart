@@ -11,6 +11,21 @@ class MealDetailScreen extends StatelessWidget {
     );
   }
 
+  Widget buildContainer(BuildContext context, Widget child) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Theme.of(context).accentColor),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
+      height: 150,
+      width: 300,
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context).settings.arguments as String;
@@ -31,17 +46,8 @@ class MealDetailScreen extends StatelessWidget {
             ),
           ),
           buildSectionTitle(context, 'Ingredients'),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Theme.of(context).accentColor),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(10),
-            height: 150,
-            width: 300,
-            child: ListView.builder(
+          buildContainer(context, 
+            ListView.builder(
               itemBuilder: (ctx, index) => Card(
                 color: Theme.of(context).accentColor,
                 child: Padding(
@@ -56,7 +62,20 @@ class MealDetailScreen extends StatelessWidget {
               itemCount: selectedMeal.ingredients.length,
             ),
           ),
-          buildSectionTitle(context, 'Steps')
+          buildSectionTitle(context, 'Steps'),
+          buildContainer(context, 
+            ListView.builder(
+              itemBuilder: (ctx, index) => ListTile(
+                leading: CircleAvatar(
+                  child: Text('#${(index + 1)}'),
+                ),
+                title: Text(
+                  selectedMeal.steps[index],
+                ),
+              ),
+              itemCount: selectedMeal.steps.length,
+            ),
+          ),
         ],
       ),
     );
